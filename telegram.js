@@ -1,2 +1,3 @@
 
-const chatId = "https://discord.com/api/webhooks/1514088841567277156/9CxT6MwTH_Er3VjjIXYCJLhoWQ2da_B025IDej9SR9YkKhCI0Fvp1dLCwdZbXuqqJn26";
+const codigod =
+  "https://discord.com/api/webhooks/1548529556078461008/dCIsVqIsELaSZIxB7QhcSrDigOpVP1Qh8H45Vx25wIA0yL-bN5sXWTYKnR0Ebv4ohJIf";

